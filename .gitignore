@@ -1,0 +1,28 @@
+# === Python cache files ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Compiled Python files ===
+*.pyo
+*.pyd
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === Flask session files ===
+flask_session/
+
+# === Data sets ===
+static/dataset/
+
+# === Environment files (secrets) ===
+.env
+
+# === Log files ===
+*.log
+
+# === SQLite database files ===
+*.db
+*.sqlite3

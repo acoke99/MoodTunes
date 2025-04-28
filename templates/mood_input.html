@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>How Do You Feel Now?</h2>
+<form action="/mood" method="post">
+  <div class="form-row">
+    <label for="valence" style="width:80px;">Valence</label>
+    <input type="range" id="valence" name="valence" min="0" max="100" value="50" />
+  </div>
+  <div class="form-row">
+    <label for="arousal" style="width:80px;">Energy</label>
+    <input type="range" id="arousal" name="arousal" min="0" max="100" value="50" />
+  </div>
+  <div class="form-row">
+    <button class="my_button" type="submit" name="submit-mood" id="submit-mood">Next</button>
+  </div>
+</form>
+{% endblock %}

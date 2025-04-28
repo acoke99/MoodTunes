@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MoodTunes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h2>Logged Out</h2>
+    <p>You have been logged out of the app.</p>
+    <p>To fully log out of Spotify, please <strong>close this window.</strong></p>
+    <p>If you want to log in with a different Spotify account, open the login link in a
+        <strong>Private (Incognito) window</strong>.
+    </p>
+    <a href="{{ url_for('home') }}">Login Again</a>
+</body>

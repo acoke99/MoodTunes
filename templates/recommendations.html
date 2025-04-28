@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block head %}
+<script src="{{ url_for('static', filename='js/recommendations.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<h2>Your Song Recommendations</h2>
+<form id="queue-form">
+  <div class="track-grid">
+    {% for track in recommendations %}
+    <label class="track-tile">
+      <input type="checkbox" name="selected_tracks" value="{{ track.uri }}">
+      <div class="track-info">
+        <p class="track-name">{{ track.name }}</p>
+        <p class="artist-name">{{ track.artist }}</p>
+      </div>
+    </label>
+    {% endfor %}
+  </div>
+  <br />
+  <button class="my_button" id="queue-btn" type="submit">Queue Selected Tracks</button>
+  <div class="form-row hidden" id="post-queue-buttons">
+    <button class="my_button" type="button" id="new-songs">Get new songs</button>
+    <button class="my_button" type="button" id="new-mood">Submit new mood</button>
+  </div>
+</form>
+{% endblock %}`

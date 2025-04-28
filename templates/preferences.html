@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
+<script src="{{ url_for('static', filename='js/preferences.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<h2>Pick your favs.</h2>
+<form action="/preferences" method="post">
+  <input type="hidden" name="source" value="{{ source }}">
+  <div>
+    <p>Search Artists</p>
+    <select id="artist-select" name="artists" multiple></select>
+  </div>
+  <br />
+  <div>
+    <p>Genres To Explore</p>
+    <div class="option-row">
+      <label><input type="checkbox" name="genres" value="classical" />Classical</label>
+      <label><input type="checkbox" name="genres" value="country" />Country</label>
+      <label><input type="checkbox" name="genres" value="electronic" />Electronic</label>
+      <label><input type="checkbox" name="genres" value="folk" />Folk</label>
+    </div>
+    <div class="option-row">
+      <label><input type="checkbox" name="genres" value="gospel" />Gospel</label>
+      <label><input type="checkbox" name="genres" value="hiphop" />Hip-Hop</label>
+      <label><input type="checkbox" name="genres" value="jazz" />Jazz</label>
+      <label><input type="checkbox" name="genres" value="metal" />Metal</label>
+    </div>
+    <div class="option-row">
+      <label><input type="checkbox" name="genres" value="other" />Other</label>
+      <label><input type="checkbox" name="genres" value="pop" />Pop</label>
+      <label><input type="checkbox" name="genres" value="rock" />Rock</label>
+      <label><input type="checkbox" name="genres" value="world" />World</label>
+    </div>
+  </div>
+  <br />
+  <div class="form-row">
+    <label for="popularity" style="width:80px;">Popularity</label>
+    <input type="range" id="popularity" name="popularity" min="0" max="100" value="50" />
+  </div>
+  <div class="form-row">
+    <label for="instrumental" style="width:80px;">Instrumental</label>
+    <input type="range" id="instrumental" name="instrumental" min="0" max="100" value="50" />
+  </div>
+  <div class="form-row">
+    <button class="my_button" type="submit">Submit</button>
+  </div>
+</form>
+{% endblock %}

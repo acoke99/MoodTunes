@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>I want to feel ...</h2>
+<form action="/goal" method="post">
+  <button class="my_button" name="goal" value="happy">Happy</button>
+  <button class="my_button" name="goal" value="chill">Chill</button>
+  <button class="my_button" name="goal" value="energetic">Energetic</button>
+  <button class="my_button" name="goal" value="same">Just the same</button>
+  <button class="my_button" name="goal" value="default">Surprise me!</button>
+</form>
+{% endblock %}
