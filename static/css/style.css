@@ -237,7 +237,7 @@ nav ul li a:hover {
 .track-tile .track-name {
   font-weight: bold;
 }
-.track-tile .artist-name {
+.track-tile .artist {
   font-size: 0.9em;
   color: #666;
 }

@@ -2,6 +2,8 @@
 {% block head %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js" defer></script>
 <script src="{{ url_for('static', filename='js/preferences.js') }}" defer></script>
 {% endblock %}
 
@@ -17,35 +19,34 @@
   <div>
     <p>Genres To Explore</p>
     <div class="option-row">
-      <label><input type="checkbox" name="genres" value="classical" />Classical</label>
-      <label><input type="checkbox" name="genres" value="country" />Country</label>
-      <label><input type="checkbox" name="genres" value="electronic" />Electronic</label>
-      <label><input type="checkbox" name="genres" value="folk" />Folk</label>
+      <label><input type="checkbox" name="genres" value="Classical" />Classical</label>
+      <label><input type="checkbox" name="genres" value="Country" />Country</label>
+      <label><input type="checkbox" name="genres" value="Electronic" />Electronic</label>
+      <label><input type="checkbox" name="genres" value="Folk" />Folk</label>
     </div>
     <div class="option-row">
-      <label><input type="checkbox" name="genres" value="gospel" />Gospel</label>
-      <label><input type="checkbox" name="genres" value="hiphop" />Hip-Hop</label>
-      <label><input type="checkbox" name="genres" value="jazz" />Jazz</label>
-      <label><input type="checkbox" name="genres" value="metal" />Metal</label>
+      <label><input type="checkbox" name="genres" value="Gospel" />Gospel</label>
+      <label><input type="checkbox" name="genres" value="Hip-Hop" />Hip-Hop</label>
+      <label><input type="checkbox" name="genres" value="Jazz" />Jazz</label>
+      <label><input type="checkbox" name="genres" value="Metal" />Metal</label>
     </div>
     <div class="option-row">
-      <label><input type="checkbox" name="genres" value="other" />Other</label>
-      <label><input type="checkbox" name="genres" value="pop" />Pop</label>
-      <label><input type="checkbox" name="genres" value="rock" />Rock</label>
-      <label><input type="checkbox" name="genres" value="world" />World</label>
+      <label><input type="checkbox" name="genres" value="Other" />Other</label>
+      <label><input type="checkbox" name="genres" value="Pop" />Pop</label>
+      <label><input type="checkbox" name="genres" value="Rock" />Rock</label>
+      <label><input type="checkbox" name="genres" value="World" />World</label>
     </div>
-  </div>
-  <br />
-  <div class="form-row">
-    <label for="popularity" style="width:80px;">Popularity</label>
-    <input type="range" id="popularity" name="popularity" min="0" max="100" value="50" />
-  </div>
-  <div class="form-row">
-    <label for="instrumental" style="width:80px;">Instrumental</label>
-    <input type="range" id="instrumental" name="instrumental" min="0" max="100" value="50" />
-  </div>
-  <div class="form-row">
-    <button class="my_button" type="submit">Submit</button>
-  </div>
+    <br />
+    <div class="form-row">
+      <label for="popularity" style="width:80px;">Popularity</label>
+      <input type="range" id="popularity" name="popularity" min="0" max="100" value="80" />
+    </div>
+    <div class="form-row">
+      <label for="instrumentalness" style="width:80px;">Instrumental</label>
+      <input type="range" id="instrumentalness" name="instrumentalness" min="0" max="100" value="20" />
+    </div>
+    <div class="form-row">
+      <button class="my_button" type="submit">Submit</button>
+    </div>
 </form>
 {% endblock %}

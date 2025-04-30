@@ -5,22 +5,28 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const choices = new Choices(artistSelect, {
-    removeItemButton: true,
-  });
-
   // Fetch artists from API
   fetch("/api/artists")
     .then((response) => response.json())
     .then((artists) => {
-      // Map artist names into Choices.js format
-      const artistChoices = artists.map((artist) => ({
+      // Map artist names into Tom Select format
+      const options = artists.map((artist) => ({
         value: artist,
-        label: artist,
+        text: artist,
       }));
 
-      // Load into Choices.js
-      choices.setChoices(artistChoices, "value", "label", true);
+      // Initialize Tom Select
+      new TomSelect(artistSelect, {
+        options: options,
+        maxOptions: 1000,
+        searchField: "text",
+        placeholder: "Search for an artist...",
+        persist: false,
+        create: false,
+        clearAfterSelect: true,
+        closeAfterSelect: true,
+        plugins: ["remove_button"],
+      });
     })
     .catch((error) => console.error("Error loading artists:", error));
 });

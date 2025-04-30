@@ -1,14 +1,13 @@
-from flask import Flask, render_template, request, redirect, jsonify, session, flash
-from spotipy import Spotify, SpotifyException
-from spotipy.oauth2 import SpotifyOAuth
-from recommend import get_all_artists, get_recommendations
-from flask_session import Session
-from datetime import timedelta
-from urllib.parse import urlparse
-
 import spotipy
 import secrets
 import os
+from flask import Flask, render_template, request, redirect, jsonify, session, flash
+from spotipy import Spotify, SpotifyException
+from spotipy.oauth2 import SpotifyOAuth
+from recommend import get_all_artists, get_recommendations, load_and_prepare_data
+from flask_session import Session
+from datetime import timedelta
+from urllib.parse import urlparse
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -47,6 +46,10 @@ sp_oauth = SpotifyOAuth(
     show_dialog=True
 )
 
+# Load track data at startup
+# Adjust path if needed
+load_and_prepare_data('static/dataset/track_data.csv')
+
 
 # Route for home page
 @app.route('/')
@@ -73,8 +76,8 @@ def mood():
     # Handle form submission.
     # Redirect to goal page.
     if request.method == 'POST':
-        session['valence'] = float(request.form['valence'])
-        session['arousal'] = float(request.form['arousal'])
+        session['valence'] = float(request.form['valence']) / 100
+        session['energy'] = float(request.form['energy']) / 100
         return redirect('/goal')
 
     # Render mood page
@@ -119,8 +122,8 @@ def preferences():
         preferences = {
             'artists': request.form.getlist('artists'),
             'genres': request.form.getlist('genres'),
-            'popularity': request.form.get('popularity'),
-            'instrumental': request.form.get('instrumental')
+            'popularity': int(request.form.get('popularity')),
+            'instrumentalness': float(request.form.get('instrumentalness')) / 100
         }
         session['preferences'] = preferences
 
@@ -142,13 +145,14 @@ def recommendations():
         return redirect('/')
 
     # Get session variables
-    valence = session.get('valence')
-    arousal = session.get('arousal')
-    goal = session.get('goal')
-    preferences = session.get('preferences')
+    valence = session.get('valence')  # User's valence (0-100)
+    energy = session.get('energy')  # User's energy (0-100)
+    goal = session.get('goal')  # User's goal (lift_me_up, chill_me_out, etc.)
+    preferences = session.get('preferences')  # User's preferences (artists, genres, popularity, instrumental)
+    recommended_ids = session.get('recommended_ids', [])  # List of recommended track IDs
 
     # Validate session variables
-    if not valence or not arousal:
+    if not valence or not energy:
         return redirect('/mood')
     elif not goal:
         return redirect('/goal')
@@ -156,7 +160,13 @@ def recommendations():
         return redirect('/preferences')
 
     # Get recommendations and render page
-    recommendations = get_recommendations(valence, arousal, goal, preferences)
+    recommendations = get_recommendations(valence, energy, goal, preferences, recommended_ids)
+
+    # Store recommended track IDs in the session
+    recommended_ids += [track['track_id'] for track in recommendations]
+    session['recommended_ids'] = recommended_ids
+
+    # Render recommendations page
     return render_template('recommendations.html', recommendations=recommendations)
 
 
@@ -239,6 +249,7 @@ def queue():
         return jsonify({"error": 'Spotify error: ' + str(e)}), e.http_status
 
 
+# Get Spotify client
 def get_spotify_client():
     # Get token from session
     token_info = session.get('token_info', None)

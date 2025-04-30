@@ -11,8 +11,8 @@
     <label class="track-tile">
       <input type="checkbox" name="selected_tracks" value="{{ track.uri }}">
       <div class="track-info">
-        <p class="track-name">{{ track.name }}</p>
-        <p class="artist-name">{{ track.artist }}</p>
+        <p class="track-name">{{ track.track_name }}</p>
+        <p class="artist">{{ track.artist }}</p>
       </div>
     </label>
     {% endfor %}
