@@ -5,28 +5,65 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Constants for localStorage cache key and max age
+  const CACHE_KEY = "artistList";
+  const CACHE_MAX_AGE = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+
+  // Try to use cached data
+  const cached = localStorage.getItem(CACHE_KEY);
+
+  if (cached) {
+    // Parse the cached JSON object
+    const parsed = JSON.parse(cached);
+    const age = Date.now() - parsed.timestamp;
+
+    // If cached data is still fresh, use it
+    if (age < CACHE_MAX_AGE) {
+      initArtistSelect(parsed.data);
+      return;
+    } else {
+      // Otherwise, remove stale cache
+      localStorage.removeItem(CACHE_KEY);
+    }
+  }
+
   // Fetch artists from API
   fetch("/api/artists")
     .then((response) => response.json())
     .then((artists) => {
-      // Map artist names into Tom Select format
-      const options = artists.map((artist) => ({
-        value: artist,
-        text: artist,
-      }));
+      // Store fetched data in localStorage with a timestamp
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          data: artists,
+          timestamp: Date.now(),
+        })
+      );
 
-      // Initialize Tom Select
-      new TomSelect(artistSelect, {
-        options: options,
-        maxOptions: 1000,
-        searchField: "text",
-        placeholder: "Search for an artist...",
-        persist: false,
-        create: false,
-        clearAfterSelect: true,
-        closeAfterSelect: true,
-        plugins: ["remove_button"],
-      });
+      // Initialize the dropdown with fetched data
+      initArtistSelect(artists);
     })
     .catch((error) => console.error("Error loading artists:", error));
+
+  // Function to initialize artist dropdown
+  function initArtistSelect(artists) {
+    // Map artist names into Tom Select format
+    const options = artists.map((artist) => ({
+      value: artist,
+      text: artist,
+    }));
+
+    // Initialize Tom Select
+    new TomSelect(artistSelect, {
+      options: options,
+      maxOptions: 1000,
+      searchField: "text",
+      placeholder: "Search for an artist...",
+      persist: false,
+      create: false,
+      clearAfterSelect: true,
+      closeAfterSelect: true,
+      plugins: ["remove_button"],
+    });
+  }
 });

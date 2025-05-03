@@ -8,8 +8,9 @@
 <form id="queue-form">
   <div class="track-grid">
     {% for track in recommendations %}
-    <label class="track-tile">
-      <input type="checkbox" name="selected_tracks" value="{{ track.uri }}">
+    <label class="track-tile" title="Valence: {{ track.valence | round(2) }}, Energy: {{ track.energy | round(2) }}">
+      <input type="checkbox" name="selected_tracks" value="{{ track.uri }}" checked>
+      <img src="{{ track.album_image_url }}" alt="Album cover" class="album-image">
       <div class="track-info">
         <p class="track-name">{{ track.track_name }}</p>
         <p class="artist">{{ track.artist }}</p>

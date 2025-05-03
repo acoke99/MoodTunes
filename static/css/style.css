@@ -242,20 +242,20 @@ nav ul li a:hover {
   color: #666;
 }
 
+.track-tile:hover {
+  background-color: #f0f8ff;
+  border-color: #1db954;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
 /* Make the whole card look selected */
-.track-tile input[type="checkbox"]:checked + .track-info {
-  background-color: #e0f0ff;
-  border-radius: 5px;
-  padding: 5px;
+.track-tile:has(input[type="checkbox"]:checked) {
+  border: 2px solid #3399ff;
+  box-shadow: 0 0 8px #b3d8ff;
 }
 
-/* Highlight the whole card when selected */
-.track-tile input[type="checkbox"]:checked ~ .track-info,
-.track-tile input[type="checkbox"]:checked {
-  border-color: #3399ff;
-}
-
-/* Make sure the border applies correctly */
-.track-tile input[type="checkbox"]:checked ~ .track-info {
-  background-color: #e6f7ff;
+/* Album Image */
+.album-image {
+  width: 150px;
+  height: 150px;
 }
