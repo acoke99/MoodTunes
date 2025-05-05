@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-<script src="{{ url_for('static', filename='js/recommendations.js') }}" defer></script>
+<script defer src="{{ url_for('static', filename='js/recommendations.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,11 +18,18 @@
     </label>
     {% endfor %}
   </div>
-  <br />
-  <button class="my_button" id="queue-btn" type="submit">Queue Selected Tracks</button>
-  <div class="form-row hidden" id="post-queue-buttons">
-    <button class="my_button" type="button" id="new-songs">Get new songs</button>
-    <button class="my_button" type="button" id="new-mood">Submit new mood</button>
+  <div class="button-bar">
+    <div>
+      <button type="button" id="pause-btn" title="Pause"><i class="fa-solid fa-pause"></i></button>
+      <button type="button" id="play-btn" title="Play"><i class="fa-solid fa-play"></i></button>
+      <button type="button" id="next-btn" title="Next"><i class="fa-solid fa-forward"></i></button>
+      <button type="button" id="previous-btn" title="Previous"><i class="fa-solid fa-backward"></i></button>
+    </div>
+    <div class="action-buttons">
+      <button class="my_button" id="queue-btn" type="submit">Queue Selected Tracks</button>
+      <button class="my_button hidden" type="button" id="new-mood">Submit new mood</button>
+      <button class="my_button" type="button" id="new-songs">Get new songs</button>
+    </div>
   </div>
 </form>
-{% endblock %}`
+{% endblock %}

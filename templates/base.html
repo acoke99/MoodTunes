@@ -5,9 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MoodTunes</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css">
-  <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/base.js') }}"></script>
   {% block head %}
   {% endblock %}
 </head>

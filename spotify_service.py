@@ -3,21 +3,12 @@ import secrets
 from flask import session
 from spotipy import Spotify, SpotifyException
 from spotipy.oauth2 import SpotifyOAuth
-
-
-# Authentication exception class
-class AuthenticationException(Exception):
-    pass
-
-
-# Application exception class
-class ApplicationException(Exception):
-    pass
+from exceptions import AuthenticationException, ApplicationException
 
 
 # Spotify service class
 class SpotifyService:
-    def __init__(self, client_id: str, client_secret: str, redirect_uri: str) -> None:
+    def __init__(self, client_id: str, client_secret: str, redirect_uri: str):
         # Spotify OAuth setup
         self.oauth = SpotifyOAuth(
             client_id=client_id,
@@ -38,7 +29,7 @@ class SpotifyService:
         return self.oauth.get_authorize_url(state=state)
 
     # Handles Spotify callback
-    def handle_callback(self, oauth_state: str, oauth_code: str):
+    def handle_callback(self, oauth_state: str, oauth_code: str) -> None:
         # Validate the state parameter to prevent CSRF
         if not oauth_state or oauth_state != session.get('oauth_state'):
             raise AuthenticationException("Invalid state parameter. Please try logging in again.")
@@ -54,7 +45,7 @@ class SpotifyService:
         token_info = self.oauth.get_access_token(oauth_code)
 
     # Get Spotify client
-    def get_client(self):
+    def get_client(self) -> Spotify:
         # Get token from session
         token_info = session.get('token_info', None)
         if not token_info:
@@ -68,6 +59,15 @@ class SpotifyService:
         # Create Spotify client
         return Spotify(auth=token_info['access_token'])
 
+    # Get Spotify user ID
+    def get_user_id(self) -> str:
+        # Get Spotify client
+        spotify = self.get_client()
+
+        # Get user ID
+        user = spotify.current_user()
+        return user['id']
+
     # Get information about a list of tracks
     def get_tracks(self, track_ids: list[str]) -> list[dict]:
         # Get Spotify client
@@ -79,10 +79,11 @@ class SpotifyService:
         # Return tracks
         return tracks['tracks']
 
-    # Add tracks to queue
-    def queue_tracks(self, uris: list[str]) -> bool:
+    # Get active device
+    def get_active_device(self, spotify: Spotify | None = None) -> str:
         # Get Spotify client
-        spotify = self.get_client()
+        if spotify is None:
+            spotify = self.get_client()
 
         # Get active devices
         devices = spotify.devices()
@@ -93,12 +94,64 @@ class SpotifyService:
 
         # Get first device ID
         device_id = devices['devices'][0]['id']
+        return device_id
 
-        # Start playback of selected tracks on device
+    # Add tracks to queue
+    def queue_tracks(self, uris: list[str]) -> bool:
+        spotify = self.get_client()
+        device_id = self.get_active_device(spotify)
         try:
             spotify.start_playback(device_id, None, uris)
         except SpotifyException as e:
-            raise ApplicationException(f"Spotify error: {str(e)}")
-
-        # Return
+            raise ApplicationException("There was an error adding the tracks to the queue.", details=str(e))
         return True
+
+    # Pause playback on the active device
+    def pause_track(self) -> bool:
+        spotify = self.get_client()
+        device_id = self.get_active_device(spotify)
+        try:
+            spotify.pause_playback(device_id=device_id)
+        except SpotifyException as e:
+            raise ApplicationException("There was an error pausing the track.", details=str(e))
+        return True
+
+    # Resume playback on the active device
+    def play_track(self) -> bool:
+        spotify = self.get_client()
+        device_id = self.get_active_device(spotify)
+        try:
+            spotify.start_playback(device_id=device_id)
+        except SpotifyException as e:
+            raise ApplicationException("There was an error resuming the track.", details=str(e))
+        return True
+
+    # Skip to the next track on the active device
+    def next_track(self) -> bool:
+        spotify = self.get_client()
+        device_id = self.get_active_device(spotify)
+        try:
+            spotify.next_track(device_id=device_id)
+        except SpotifyException as e:
+            raise ApplicationException("There was an error skipping to the next track.", details=str(e))
+        return True
+
+    # Skip to the previous track on the active device
+    def previous_track(self) -> bool:
+        spotify = self.get_client()
+        device_id = self.get_active_device(spotify)
+        try:
+            spotify.previous_track(device_id=device_id)
+        except SpotifyException as e:
+            raise ApplicationException("There was an error skipping to the previous track.", details=str(e))
+        return True
+
+    # Get user's top artists
+    def get_top_artists(self) -> list[str]:
+        spotify = self.get_client()
+        try:
+            top_artists = spotify.current_user_top_artists(limit=10)
+            artist_names = [artist['name'] for artist in top_artists['items']]
+            return artist_names
+        except SpotifyException as e:
+            raise ApplicationException("There was an error retrieving your top artists.", details=str(e))

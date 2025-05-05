@@ -2,9 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("queue-form");
   const button = document.getElementById("queue-btn");
   const messageDiv = document.getElementById("custom-messages");
-  const postQueueButtons = document.getElementById("post-queue-buttons");
+
   const newSongsBtn = document.getElementById("new-songs");
   const newMoodBtn = document.getElementById("new-mood");
+
+  const pauseBtn = document.getElementById("pause-btn");
+  const playBtn = document.getElementById("play-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const previousBtn = document.getElementById("previous-btn");
 
   // Add handler for button to queue tracks
   if (form && button && messageDiv) {
@@ -26,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Call API
-      // Leave button disabled after successful call
+      // Leave "queue tracks" button disabled after successful call
       try {
         const response = await fetch("/api/queue", {
           method: "POST",
@@ -37,12 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           showMessage(result.message, "success");
 
-          // Hide the queue button
-          button.style.display = "none";
+          // Hide the "queue tracks" button
+          button.classList.add("hidden");
 
-          // Show the row of buttons for "new songs" and "new mood"
-          if (postQueueButtons) {
-            postQueueButtons.classList.remove("hidden");
+          // Disable all selected_tracks checkboxes
+          document.querySelectorAll('input[name="selected_tracks"]').forEach((cb) => (cb.disabled = true));
+
+          // Show the "new mood" button
+          if (newMoodBtn) {
+            newMoodBtn.classList.remove("hidden");
           }
         } else {
           showMessage(result.error, "error");
@@ -64,6 +72,28 @@ document.addEventListener("DOMContentLoaded", () => {
   if (newMoodBtn) {
     newMoodBtn.addEventListener("click", () => {
       window.location.href = "/mood";
+    });
+  }
+
+  // Playback control handlers
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", function () {
+      fetch("/api/pause", { method: "POST" });
+    });
+  }
+  if (playBtn) {
+    playBtn.addEventListener("click", function () {
+      fetch("/api/play", { method: "POST" });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function () {
+      fetch("/api/next", { method: "POST" });
+    });
+  }
+  if (previousBtn) {
+    previousBtn.addEventListener("click", function () {
+      fetch("/api/previous", { method: "POST" });
     });
   }
 

@@ -15,13 +15,16 @@ venv/
 flask_session/
 
 # === Data sets ===
-static/dataset/
+datasets/
 
 # === Environment files (secrets) ===
 .env
 
 # === Log files ===
 *.log
+
+# === Flask instance folder ===
+instance/
 
 # === SQLite database files ===
 *.db

@@ -3,11 +3,23 @@
 <h2>How Do You Feel Now?</h2>
 <form action="/mood" method="post">
   <div class="form-row">
-    <label for="valence" style="width:80px;">Valence</label>
+    <label for="valence" style="width:80px;" class="info-label">
+      Valence
+      <span class="info-icon" tabindex="0">
+        <i class="fa-solid fa-circle-info"></i>
+        <span class="tooltip-text">How positive or negative you feel</span>
+      </span>
+    </label>
     <input type="range" id="valence" name="valence" min="0" max="100" value="50" />
   </div>
   <div class="form-row">
-    <label for="energy" style="width:80px;">Energy</label>
+    <label for="energy" style="width:80px;" class="info-label">
+      Energy
+      <span class="info-icon" tabindex="0">
+        <i class="fa-solid fa-circle-info"></i>
+        <span class="tooltip-text">How energetic or calm you feel</span>
+      </span>
+    </label>
     <input type="range" id="energy" name="energy" min="0" max="100" value="50" />
   </div>
   <div class="form-row">

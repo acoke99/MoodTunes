@@ -53,9 +53,17 @@ document.addEventListener("DOMContentLoaded", () => {
       text: artist,
     }));
 
+    // Get preferred artists from Alpine.js state
+    let selected_items = [];
+    const preferred_artists = getAlpineDataProperty("artists");
+    if (Array.isArray(preferred_artists)) {
+      selected_items = preferred_artists;
+    }
+
     // Initialize Tom Select
     new TomSelect(artistSelect, {
       options: options,
+      items: selected_items,
       maxOptions: 1000,
       searchField: "text",
       placeholder: "Search for an artist...",
@@ -65,5 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
       closeAfterSelect: true,
       plugins: ["remove_button"],
     });
+  }
+
+  // Function to get a property from Alpine.js state
+  function getAlpineDataProperty(propName) {
+    const el = document.querySelector("[x-data]");
+    return el?._x_dataStack?.[0]?.[propName];
   }
 });
