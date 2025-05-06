@@ -1,0 +1,12 @@
+{
+  "base-uri": "'self'",
+  "style-src": "'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://site-assets.fontawesome.com",
+  "script-src": "'self' https://cdn.jsdelivr.net",
+  "img-src": "'self' data: https://i.scdn.co",
+  "font-src": "'self' https://site-assets.fontawesome.com",
+  "connect-src": "'self' https://api.spotify.com",
+  "frame-ancestors": "'none'",
+  "object-src": "'none'",
+  "child-src": "'none'",
+  "worker-src": "'self'"
+}

@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from track_data import TrackData
 from spotify_service import SpotifyService
+from track_data import TrackData
 
 
 # Recommendation engine class

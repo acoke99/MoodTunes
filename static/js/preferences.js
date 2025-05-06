@@ -1,4 +1,25 @@
+// Extract and register Alpine data
+document.addEventListener("alpine:init", () => {
+  const jsonEl = document.getElementById("preferences-data");
+  let data = {};
+
+  if (jsonEl) {
+    try {
+      data = JSON.parse(jsonEl.textContent);
+      window._preferences = data;
+    } catch (e) {
+      console.error("Failed to parse preferences data", e);
+    }
+  }
+
+  Alpine.data("preferences", () => data);
+});
+
+// Handle DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
+  // Get CSRF token
+  const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+
   // Load artist selection
   const artistSelect = document.getElementById("artist-select");
   if (!artistSelect) {
@@ -28,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Fetch artists from API
-  fetch("/api/artists")
+  fetch("/api/artists", { headers: { "X-CSRFToken": csrfToken } })
     .then((response) => response.json())
     .then((artists) => {
       // Store fetched data in localStorage with a timestamp

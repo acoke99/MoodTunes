@@ -1,9 +1,9 @@
-import spotipy
 import secrets
+import spotipy
+from exceptions import AuthenticationException, ApplicationException
 from flask import session
 from spotipy import Spotify, SpotifyException
 from spotipy.oauth2 import SpotifyOAuth
-from exceptions import AuthenticationException, ApplicationException
 
 
 # Spotify service class

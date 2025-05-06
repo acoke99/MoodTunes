@@ -1,7 +1,8 @@
 import hashlib
 import json
-from flask import session
 from exceptions import ApplicationException
+from flask import session
+from util import Util
 
 
 # User store class
@@ -20,7 +21,7 @@ class UserStore:
     # Check if a user exists
     def user_exists(self, user_id: str) -> bool:
         # Hash user ID
-        hashed_user_id = self._hash_user_id(user_id)
+        hashed_user_id = self.hash_user_id(user_id)
 
         # Check if user exists in database
         conn = self.app.get_db()
@@ -36,7 +37,7 @@ class UserStore:
             return
 
         # Hash user ID
-        hashed_user_id = self._hash_user_id(user_id)
+        hashed_user_id = self.hash_user_id(user_id)
 
         # Insert user into database
         conn = self.app.get_db()
@@ -57,7 +58,7 @@ class UserStore:
             return
 
         # Hash user ID
-        hashed_user_id = self._hash_user_id(spotify_user)
+        hashed_user_id = self.hash_user_id(spotify_user)
 
         # Get preferences from database.
         # These are stored as JSON, and must be parsed.
@@ -91,12 +92,16 @@ class UserStore:
             raise ApplicationException("Your MoodTunes User account could not be found")
 
         # Hash user ID
-        hashed_user_id = self._hash_user_id(spotify_user)
+        hashed_user_id = self.hash_user_id(spotify_user)
 
-        # Convert preferences to JSON
+        # Check that preferences is a dictionary
         if not isinstance(preferences, dict):
             raise ValueError("Invalid preferences format")
 
+        # Sanitise data
+        preferences = Util.sanitise_data(preferences)
+
+        # Convert data to JSON
         try:
             preferences_json = json.dumps(preferences)
         except (TypeError, ValueError) as e:
@@ -117,5 +122,5 @@ class UserStore:
         session['preferences'] = preferences
 
     # Return a one-way SHA-256 hash of the given Spotify user ID
-    def _hash_user_id(self, user_id: str) -> str:
+    def hash_user_id(self, user_id: str) -> str:
         return hashlib.sha256(user_id.encode('utf-8')).hexdigest()

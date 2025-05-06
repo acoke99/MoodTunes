@@ -6,6 +6,7 @@
 {% block content %}
 <h2>Your Song Recommendations</h2>
 <form id="queue-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <div class="track-grid">
     {% for track in recommendations %}
     <label class="track-tile" title="Valence: {{ track.valence | round(2) }}, Energy: {{ track.energy | round(2) }}">

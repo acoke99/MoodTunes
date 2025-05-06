@@ -1,8 +1,7 @@
 import json
-from flask import render_template, request, redirect, jsonify, session, flash
 from app_factory import AppFactory
+from flask import render_template, request, redirect, jsonify, session, flash
 from util import Util
-
 
 # Create the Flask app
 factory = AppFactory()
@@ -166,11 +165,13 @@ def callback():
         # Get user ID
         user_id = app.spotify_service.get_user_id()
         session['user_id'] = user_id
+        app.logger.info(f"Successful login from {request.remote_addr}")
 
         # Initialise user
         app.user_store.initialise_user(user_id)
 
     except Exception as e:
+        app.logger.info(f"Failed login from {request.remote_addr}")
         flash(str(e), "error")
         return redirect('/')
 
@@ -219,7 +220,7 @@ def pause_track():
         app.spotify_service.pause_track()
         return '', 204
     except Exception:
-        return '', 500
+        return 'Action not possible', 403
 
 
 # Resume playback
@@ -229,7 +230,7 @@ def play_track():
         app.spotify_service.play_track()
         return '', 204
     except Exception:
-        return '', 500
+        return 'Action not possible', 403
 
 
 # Skip to next track
@@ -239,7 +240,7 @@ def next_track():
         app.spotify_service.next_track()
         return '', 204
     except Exception:
-        return '', 500
+        return 'Action not possible', 403
 
 
 # Skip to previous track
@@ -249,9 +250,17 @@ def previous_track():
         app.spotify_service.previous_track()
         return '', 204
     except Exception:
-        return '', 500
+        return 'Action not possible', 403
+
+
+# Log Content Security Policy violations
+@app.route("/csp_report", methods=["POST"])
+@app.csrf.exempt
+def csp_report():
+    app.logger.critical(request.data.decode())
+    return "done"
 
 
 # Start the Flask server (only when running this script directly)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

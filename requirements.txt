@@ -1,7 +1,12 @@
+bleach
 Flask
+Flask_cors
+Flask-csp
+Flask-Talisman
+Flask-WTF
 flask-session
-spotipy
+ipykernel
 numpy
 pandas
 scikit-learn
-ipykernel
+spotipy

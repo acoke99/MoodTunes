@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-btn");
   const previousBtn = document.getElementById("previous-btn");
 
+  const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+
   // Add handler for button to queue tracks
   if (form && button && messageDiv) {
     form.addEventListener("submit", async function (e) {
@@ -35,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const response = await fetch("/api/queue", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken },
           body: JSON.stringify(selectedTracks),
         });
         const result = await response.json();
@@ -78,22 +80,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // Playback control handlers
   if (pauseBtn) {
     pauseBtn.addEventListener("click", function () {
-      fetch("/api/pause", { method: "POST" });
+      fetch("/api/pause", { method: "POST", headers: { "X-CSRFToken": csrfToken } });
     });
   }
   if (playBtn) {
     playBtn.addEventListener("click", function () {
-      fetch("/api/play", { method: "POST" });
+      fetch("/api/play", { method: "POST", headers: { "X-CSRFToken": csrfToken } });
     });
   }
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
-      fetch("/api/next", { method: "POST" });
+      fetch("/api/next", { method: "POST", headers: { "X-CSRFToken": csrfToken } });
     });
   }
   if (previousBtn) {
     previousBtn.addEventListener("click", function () {
-      fetch("/api/previous", { method: "POST" });
+      fetch("/api/previous", { method: "POST", headers: { "X-CSRFToken": csrfToken } });
     });
   }
 

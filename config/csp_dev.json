@@ -1,0 +1,13 @@
+{
+  "default-src": "*",
+  "script-src": "* 'unsafe-inline' 'unsafe-eval' data:",
+  "style-src": "* 'unsafe-inline' data:",
+  "img-src": "* data: blob:",
+  "connect-src": "*",
+  "font-src": "*",
+  "media-src": "*",
+  "object-src": "*",
+  "frame-src": "*",
+  "child-src": "*",
+  "worker-src": "*"
+}

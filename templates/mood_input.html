@@ -2,8 +2,9 @@
 {% block content %}
 <h2>How Do You Feel Now?</h2>
 <form action="/mood" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <div class="form-row">
-    <label for="valence" style="width:80px;" class="info-label">
+    <label for="valence" class="info-label width-100">
       Valence
       <span class="info-icon" tabindex="0">
         <i class="fa-solid fa-circle-info"></i>
@@ -13,7 +14,7 @@
     <input type="range" id="valence" name="valence" min="0" max="100" value="50" />
   </div>
   <div class="form-row">
-    <label for="energy" style="width:80px;" class="info-label">
+    <label for="energy" class="info-label width-100">
       Energy
       <span class="info-icon" tabindex="0">
         <i class="fa-solid fa-circle-info"></i>

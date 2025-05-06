@@ -2,6 +2,7 @@
 {% block content %}
 <h2>I want to feel ...</h2>
 <form action="/goal" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <button class="my_button" name="goal" value="lift_me_up">Happy</button>
   <button class="my_button" name="goal" value="chill_me_out">Chill</button>
   <button class="my_button" name="goal" value="fire_me_up">Energetic</button>

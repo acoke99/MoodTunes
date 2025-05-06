@@ -1,21 +1,24 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"terminal.integrated.defaultProfile.windows": "Git Bash",
-		"workbench.editorAssociations": {
-			"*.md": "vscode.markdown.preview.editor"
-		},
-		"editor.defaultFormatter": "ms-python.autopep8",
-		"[html]": {
-			"editor.defaultFormatter": "vscode.html-language-features"
-		},
-		"editor.wordWrapColumn": 120,
-		"[python]": {
-			"editor.defaultFormatter": "ms-python.autopep8"
-		}
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "workbench.editorAssociations": {
+      "*.md": "vscode.markdown.preview.editor"
+    },
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "editor.wordWrapColumn": 120,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
 }
