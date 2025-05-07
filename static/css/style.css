@@ -3,7 +3,7 @@
    1. Reset & Base Styles
    ========================= */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f9;
@@ -72,8 +72,8 @@ nav {
   overflow: hidden;
   position: absolute;
   right: 20px;
-  top: 50px;
-  width: 200px;
+  top: 60px;
+  width: 180px;
   background: #eee;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -343,4 +343,23 @@ nav ul li a:hover {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+}
+
+/* =========================
+   9. Logos
+   ========================= */
+.main-image-container {
+  width: 100%;
+  max-width: 711px;
+  margin: 0 auto;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+}
+
+.small-logo {
+  width: 50px;
+  height: 50px;
 }

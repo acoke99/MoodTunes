@@ -25,6 +25,7 @@ class AppFactory:
 
         # Get the Flask environment (development or production)
         self.app.env = os.environ.get('FLASK_ENV')
+        print(f'Flask environment: {self.app.env}')
 
         # Setup logging
         self._setup_logging()
@@ -49,7 +50,7 @@ class AppFactory:
         self.app.config['SESSION_COOKIE_NAME'] = 'MoodTunesAppSession'  # Name of the session cookie
         self.app.config["SESSION_TYPE"] = "filesystem"  # Store sessions server-side
         self.app.config["SESSION_PERMANENT"] = True  # Enable session expiration
-        self.app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)  # Auto-expire after 30 minutes
+        self.app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=1)  # Auto-expire after 1 hour
 
         # Configure sessions for the app
         Session(self.app)
@@ -70,7 +71,8 @@ class AppFactory:
             csp_settings = json.load(f)
 
         # Apply CSP settings to the app
-        self.app.csp = Talisman(self.app, content_security_policy=csp_settings)
+        self.app.csp = Talisman(self.app, content_security_policy=csp_settings,
+                                force_https=False if self.app.env == "development" else True)
 
         # Load Spotify credentials from environment
         sp_client_id = os.environ.get('SPOTIFY_CLIENT_ID')

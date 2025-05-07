@@ -161,11 +161,11 @@ def callback():
     try:
         # Call client method to handle callback
         app.spotify_service.handle_callback(state, code)
+        app.logger.info(f"Successful login from {request.remote_addr}")
 
         # Get user ID
         user_id = app.spotify_service.get_user_id()
         session['user_id'] = user_id
-        app.logger.info(f"Successful login from {request.remote_addr}")
 
         # Initialise user
         app.user_store.initialise_user(user_id)
