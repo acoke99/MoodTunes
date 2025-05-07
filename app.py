@@ -19,7 +19,6 @@ def home():
     session['session_initialised'] = True
 
     # Render home page
-    flash("For the best experience, run this app in a Private (Incognito) window. This avoids sharing your Spotify session with others.", "info")
     return render_template('index.html', home_page=True)
 
 
