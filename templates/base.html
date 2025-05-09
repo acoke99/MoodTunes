@@ -32,9 +32,9 @@
   <!-- Header -->
   {% if not home_page %}
   <header>
-    <div style="display: flex; align-items: center; gap: 12px;">
+    <div class="header-brand">
       <img src="{{ url_for('static', filename='img/small_logo.png') }}" class="small-logo" alt="Small Logo">
-      <h2 style="margin: 0;">MoodTunes</h2>
+      <h2 class="header-title">MoodTunes</h2>
     </div>
     <button class="hamburger hamburger--collapse" id="menu-toggle" type="button">
       <span class="hamburger-box">
