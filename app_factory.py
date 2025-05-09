@@ -23,6 +23,9 @@ class AppFactory:
         # Initialize the Flask application
         self.app = Flask(__name__, instance_relative_config=True)
 
+        # Get the project directory
+        self.app.project_dir = os.path.dirname(os.path.abspath(__file__))
+
         # Get the Flask environment (development or production)
         self.app.env = os.environ.get('FLASK_ENV')
         print(f'Flask environment: {self.app.env}')
@@ -63,9 +66,9 @@ class AppFactory:
 
         # Load CSP settings from JSON
         if self.app.env == 'development':
-            csp_file = "config/csp_dev.json"
+            csp_file = os.path.join(self.app.project_dir, 'config/csp_dev.json')
         else:
-            csp_file = "config/csp_prod.json"
+            csp_file = os.path.join(self.app.project_dir, 'config/csp_prod.json')
 
         with open(csp_file) as f:
             csp_settings = json.load(f)
@@ -91,7 +94,7 @@ class AppFactory:
 
         # Load and prepare track data
         track_data = TrackData()
-        track_data.load_csv('datasets/track_data.csv')
+        track_data.load_csv(os.path.join(self.app.project_dir, 'datasets/track_data.csv'))
 
         # Initialise recommender
         recommender = RecommendationEngine(track_data, spotify_service)
@@ -101,7 +104,7 @@ class AppFactory:
 
         # Initialize MoodTunes database
         self.app.db_path = os.path.join(self.app.instance_path, 'moodtunes.db')
-        self.app.db_schema_path = 'sql/schema.sql'
+        self.app.db_schema_path = os.path.join(self.app.project_dir, 'sql/schema.sql')
         self._initialise_db()
 
         # Attach services to the app
