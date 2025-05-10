@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Validate selection
       if (selectedTracks.length === 0) {
-        showMessage("Please select at least one track.", "warning");
+        showToast("Please select at least one track.", "warning");
         button.disabled = false;
         return;
       }
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         const result = await response.json();
         if (response.ok) {
-          showMessage(result.message, "success");
+          showToast(result.message, "success");
 
           // Hide the "queue tracks" button
           button.classList.add("hidden");
@@ -55,11 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
             newMoodBtn.classList.remove("hidden");
           }
         } else {
-          showMessage(result.error, "error");
+          showToast(result.error, "error");
           button.disabled = false;
         }
       } catch (error) {
-        showMessage("Unable to connect. Please try again.", "error");
+        showToast("Unable to connect. Please try again.", "error");
         button.disabled = false;
       }
     });
@@ -97,11 +97,5 @@ document.addEventListener("DOMContentLoaded", () => {
     previousBtn.addEventListener("click", function () {
       fetch("/api/previous", { method: "POST", headers: { "X-CSRFToken": csrfToken } });
     });
-  }
-
-  // Show custom message
-  // type: "success", "warning", "error", "info"
-  function showMessage(msg, type) {
-    messageDiv.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
   }
 });

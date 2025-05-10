@@ -14,14 +14,13 @@
   {% endblock %}
 </head>
 
-<!-- Flash messages -->
+<!-- Container for injecting toasts -->
+<div id="toast-container"></div>
+
+<!-- Inject server flash messages as JSON data for external JS -->
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-{% for category, message in messages %}
-<div class="alert alert-{{ category }}">
-  {{ message }}
-</div>
-{% endfor %}
+<div id="server-flash-data" data-flashes='{{ messages | tojson | safe }}' class="hidden"></div>
 {% endif %}
 {% endwith %}
 
