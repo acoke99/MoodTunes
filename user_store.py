@@ -75,7 +75,10 @@ class UserStore:
 
         # If none are found, use default preferences.
         # Include artists from the user's listening history.
-        if prefs is None:
+        if prefs:
+            prefs_loaded = True
+        else:
+            prefs_loaded = False
             prefs = self.default_preferences.copy()
             try:
                 prefs['artists'] = self.app.spotify_service.get_top_artists()
@@ -84,6 +87,7 @@ class UserStore:
 
         # Store preferences in session
         session['preferences'] = prefs
+        session['preferences_loaded'] = prefs_loaded
 
     # Saves a user's preferences to the database
     def save_preferences(self, spotify_user: str, preferences: dict) -> None:
@@ -115,6 +119,7 @@ class UserStore:
                 (preferences_json, hashed_user_id)
             )
             conn.commit()
+            session['preferences_in_db'] = True
         except Exception as e:
             raise ApplicationException("Your preferences could not be saved", str(e))
 

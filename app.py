@@ -58,7 +58,7 @@ def goal():
             flash(str(e), "error")
             return render_template('goal.html')
 
-        if not session.get('preferences'):
+        if not session.get('preferences_loaded'):
             return redirect('/preferences')
         else:
             return redirect('/recommendations')
