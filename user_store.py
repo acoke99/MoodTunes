@@ -119,7 +119,6 @@ class UserStore:
                 (preferences_json, hashed_user_id)
             )
             conn.commit()
-            session['preferences_in_db'] = True
         except Exception as e:
             raise ApplicationException("Your preferences could not be saved", str(e))
 
