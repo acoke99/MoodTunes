@@ -81,7 +81,9 @@ FLASK_ENV=development
 
 For more info, see the [Spotify Web API documentation](https://developer.spotify.com/documentation/web-api).
 
-5. Run the app
+5. Add `spotify_data.csv` and `artists.csv` to the datasets folder. Then run the `data_wrangling.ipynb` Jupyter notebook to generate the final dataset, `track_data.csv`, used by the recommendation engine.
+
+6. Run the app
 ```
 flask run
 ```

@@ -8,5 +8,7 @@ flask-session
 ipykernel
 numpy
 pandas
+pytest
+pytest-html
 scikit-learn
 spotipy

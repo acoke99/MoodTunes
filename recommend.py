@@ -28,7 +28,7 @@ class RecommendationEngine:
                             energy: float,
                             goal: str,
                             preferences: dict,
-                            recommended_ids=list[str] | None) -> list[dict]:
+                            recommended_ids: list[str] | None = None) -> list[dict]:
 
         # Ensure the track database has been loaded
         if self.df is None:
@@ -67,6 +67,11 @@ class RecommendationEngine:
         # Recommend songs by combining similarity and mood progression
         rec_df = self._recommend_songs(filtered_df, similarity_scores, valence,
                                        energy, target_mood, recommended_ids, top_n=10)
+
+        # Check if we have any recommendations
+        if rec_df.empty:
+            # No tracks available after filtering, return empty list
+            return []
 
         # Format output for Spotify playback
         # Convert track IDs to Spotify URIs
@@ -135,8 +140,8 @@ class RecommendationEngine:
                          start_valence: float,
                          start_energy: float,
                          target_mood: dict,
-                         recommended_ids=list[str] | None,
-                         top_n=10) -> list[dict]:
+                         recommended_ids: list[str] | None = None,
+                         top_n: int = 10) -> list[dict]:
 
         # Initialize variables
         recommended_tracks = []
