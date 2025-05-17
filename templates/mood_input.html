@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% block head %}
+<script defer src="{{ url_for('static', filename='js/mood_input.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <h2>How Do You Feel Now?</h2>
 <form action="/mood" method="post">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <div class="form-row">
-    <label for="valence" class="info-label width-100">
+    <label for="valence" class="info-label width-80">
       Valence
       <span class="info-icon" tabindex="0">
         <i class="fa-solid fa-circle-info"></i>
@@ -12,9 +16,10 @@
       </span>
     </label>
     <input type="range" id="valence" name="valence" min="0" max="100" value="50" />
+    <div class="emoji-display" id="valence-emoji">&#x1F610;</div>
   </div>
   <div class="form-row">
-    <label for="energy" class="info-label width-100">
+    <label for="energy" class="info-label width-80">
       Energy
       <span class="info-icon" tabindex="0">
         <i class="fa-solid fa-circle-info"></i>
@@ -22,6 +27,7 @@
       </span>
     </label>
     <input type="range" id="energy" name="energy" min="0" max="100" value="50" />
+    <div class="emoji-display" id="energy-emoji">&#x1F636;</div>
   </div>
   <div class="form-row">
     <button class="my_button" type="submit" name="submit-mood" id="submit-mood">Submit</button>

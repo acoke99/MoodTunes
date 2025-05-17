@@ -133,12 +133,16 @@ def recommendations():
     elif not preferences:
         return redirect('/preferences')
 
-    # Get recommendations and render page
-    recommendations = app.recommender.get_recommendations(valence, energy, goal, preferences, recommended_ids)
+    try:
+        # Get recommendations and render page
+        recommendations = []
+        recommendations = app.recommender.get_recommendations(valence, energy, goal, preferences, recommended_ids)
 
-    # Store recommended track IDs in the session
-    new_ids = [track['track_id'] for track in recommendations]
-    session['recommended_ids'] = recommended_ids + new_ids
+        # Store recommended track IDs in the session
+        new_ids = [track['track_id'] for track in recommendations]
+        session['recommended_ids'] = recommended_ids + new_ids
+    except Exception as e:
+        flash(str(e), "error")
 
     # Render recommendations page
     return render_template('recommendations.html', recommendations=recommendations)

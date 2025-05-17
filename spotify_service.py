@@ -65,8 +65,14 @@ class SpotifyService:
         spotify = self.get_client()
 
         # Get user ID
-        user = spotify.current_user()
-        return user['id']
+        try:
+            user = spotify.current_user()
+            return user['id']
+        except SpotifyException as e:
+            # If user is logged in but not registered, return dummy user ID so that they can use the app in demo mode
+            if "user may not be registered" in str(e):
+                return 'dummy'
+            raise ApplicationException("There was an error retrieving your user ID.", details=str(e))
 
     # Get information about a list of tracks
     def get_tracks(self, track_ids: list[str]) -> list[dict]:
@@ -74,10 +80,12 @@ class SpotifyService:
         spotify = self.get_client()
 
         # Get tracks
-        tracks = spotify.tracks(track_ids)
-
-        # Return tracks
-        return tracks['tracks']
+        try:
+            tracks = spotify.tracks(track_ids)
+            # Return tracks
+            return tracks['tracks']
+        except SpotifyException as e:
+            raise ApplicationException("There was an error retrieving track information.", details=str(e))
 
     # Get active device
     def get_active_device(self, spotify: Spotify | None = None) -> str:
@@ -86,15 +94,18 @@ class SpotifyService:
             spotify = self.get_client()
 
         # Get active devices
-        devices = spotify.devices()
-        num_devices = len(devices['devices'])
-        if num_devices == 0:
-            raise ApplicationException(
-                "No active Spotify device found. Please open Spotify on one of your devices and try again.")
+        try:
+            devices = spotify.devices()
+            num_devices = len(devices['devices'])
+            if num_devices == 0:
+                raise ApplicationException(
+                    "No active Spotify device found. Please open Spotify on one of your devices and try again.")
 
-        # Get first device ID
-        device_id = devices['devices'][0]['id']
-        return device_id
+            # Get first device ID
+            device_id = devices['devices'][0]['id']
+            return device_id
+        except SpotifyException as e:
+            raise ApplicationException("There was an error retrieving your devices.", details=str(e))
 
     # Add tracks to queue
     def queue_tracks(self, uris: list[str]) -> bool:

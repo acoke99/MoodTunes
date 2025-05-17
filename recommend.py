@@ -78,16 +78,21 @@ class RecommendationEngine:
         rec_df['uri'] = 'spotify:track:' + rec_df['track_id']
 
         # Get track information
-        tracks = self.spotify_service.get_tracks(rec_df['track_id'].tolist())
+        try:
+            tracks = self.spotify_service.get_tracks(rec_df['track_id'].tolist())
 
-        # Map track ID to image URL
-        track_to_image = {
-            track['id']: track['album']['images'][1]['url']
-            for track in tracks if track['album']['images']
-        }
+            # Map track ID to image URL
+            track_to_image = {
+                track['id']: track['album']['images'][1]['url']
+                for track in tracks if track['album']['images']
+            }
 
-        # Map image URLs back to the DataFrame by track ID
-        rec_df['album_image_url'] = rec_df['track_id'].map(track_to_image)
+            # Map image URLs back to the DataFrame by track ID
+            rec_df['album_image_url'] = rec_df['track_id'].map(track_to_image)
+        except Exception:
+            # If tracks can't be retrieved, use a default image URL
+            default_image_url = '/static/img/default_album.png'
+            rec_df['album_image_url'] = default_image_url
 
         # Return the final list of recommendations as a list of dictionaries
         return rec_df.to_dict(orient='records')

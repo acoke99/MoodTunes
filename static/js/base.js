@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const flashEl = document.getElementById("server-flash-data");
   if (flashEl) {
     const flashes = JSON.parse(flashEl.dataset.flashes);
-    flashes.forEach(([category, message]) => {
+    flashes.forEach(([message, category]) => {
       showToast(category, message);
     });
   }
