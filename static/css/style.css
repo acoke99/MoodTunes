@@ -28,13 +28,16 @@ body {
 }
 
 .width-80 {
-  width: 80px;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
 }
 
-.width-100 {
-  width: 100px;
+.width-110 {
+  width: 110px !important;
+  min-width: 110px !important;
+  max-width: 110px !important;
 }
-
 /* =========================
    3. Typography
    ========================= */
@@ -375,6 +378,8 @@ nav ul li a:hover {
   align-items: center;
   gap: 0.25rem;
   margin-right: 1rem;
+  min-width: fit-content;
+  max-width: 100%;
 }
 
 .info-icon {
