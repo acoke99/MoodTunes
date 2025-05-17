@@ -105,6 +105,7 @@ flask run
 ├── sql/                    # SQL script for database setup
 ├── static/                 # Static files (CSS, JS, images)
 ├── templates/              # HTML templates (Jinja2)
+├── tests/                  # Pytest unit and integration tests
 ├── app.py                  # Main Flask application
 ├── app_factory.py          # App factory and configuration
 ├── exceptions.py           # Custom exception classes for error handling

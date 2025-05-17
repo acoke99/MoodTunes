@@ -165,6 +165,9 @@ class RecommendationEngine:
         val_adj = (target_mood['target_valence'] - start_valence) / top_n
         nrg_adj = (target_mood['target_energy'] - start_energy) / top_n
 
+        # Precompute sqrt(2) - example of common sub-expression elimination
+        sqrt2 = np.sqrt(2)
+
         # Generate top_n song recommendations
         for step in range(top_n):
             # Gradually adjust target mood at each recommendation step
@@ -177,7 +180,7 @@ class RecommendationEngine:
 
             # Normalize distances to compute mood closeness (1 = exact match, 0 = no closeness).
             # Assumes valence and energy are both in [0, 1], so the maximum possible distance is sqrt(2).
-            closeness = np.clip(1 - (distances / np.sqrt(2)), 0, 1)
+            closeness = np.clip(1 - (distances / sqrt2), 0, 1)
 
             # Combine scores for mood and non-mood features
             combined_scores = closeness * self.weights['mood'] + similarity_scores * self.weights['non_mood']
